@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">{{ property.title }}</h2>
+
+    <!-- Bootstrap Carousel for property images -->
+    {% if images %}
+    <div id="propertyCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% for image in images %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ image.cover_image.url }}" class="d-block w-100" alt="{{ property.title }}" style="height: 400px; object-fit: cover;">
+            </div>
+            {% endfor %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#propertyCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#propertyCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    {% else %}
+    <p>No images available for this property.</p>
+    {% endif %}
+
+    <!-- Property details -->
+    <div class="card p-4 shadow-sm">
+        <p><strong>Location:</strong> {{ property.location }}</p>
+        <p><strong>Price:</strong> KES {{ property.price }}</p>
+        <p><strong>Type:</strong> {{ property.get_property_type_display }}</p>
+        <p><strong>Status:</strong> {% if property.is_booked %}Booked{% else %}Available{% endif %}</p>
+        <hr>
+        <p><strong>Description:</strong></p>
+        <p>{{ property.description }}</p>
+    </div>
+
+    <a href="{% url 'property_list' %}" class="btn btn-secondary mt-3">← Back to Listings</a>
+</div>
+{% endblock %}
